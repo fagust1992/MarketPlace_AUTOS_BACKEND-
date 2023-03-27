@@ -1,0 +1,9 @@
+--TABLE PRODUCTS---
+CREATE TABLE productos (
+id SERIAL PRIMARY KEY,
+Sku VARCHAR(15) NOT NULL UNIQUE,
+nombre_producto  VARCHAR(15) NOT NULL,
+descripcion_producto VARCHAR(15) NOT NULL,
+precio INTEGER NOT NULL,
+imagen VARCHAR(1000) NOT NULL
+);
