@@ -1,24 +1,18 @@
+const express = require("express");
 const app = require("./app");
-const { obtenerRol } = require("./src/controllers/rolController");
-const { obtenerProducto } = require("./src/controllers/productosController");
 
-app.get("/rol", async (request, response) => {
-  try {
-    const rol = await obtenerRol();
-    response.json(rol);
-  } catch (error) {
-    response.status(500).json({ message: "Error al intentar traer roles" });
-    throw new Error("ha fallado la conexion ", { cause: error });
-  }
-});
+const productorouter = require("./src/routes/productos");
 
-app.get("/productos", async (request, response) => {
+app.use(express.json());
+app.use("/rol", require("./src/routes/Rol"));
+app.use("/productos", productorouter);
+
+const on = () => {
   try {
-    const product = await obtenerProducto();
-    response.json(product);
+    app.listen(3000, console.log("encedido el servidor"));
   } catch (error) {
-    console.error("Error al intentar traer productos :", error);
-    response.status(500).json({ message: "Error al intentar traer productos" });
+    throw new Error("ha fallado el servidor", { cause: error });
   }
-});
-app.listen(3000, console.log("encedido el servidor"));
+};
+
+on();

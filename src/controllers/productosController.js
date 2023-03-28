@@ -14,19 +14,36 @@ const obtenerProducto = async () => {
   }
 };
 // doris codigo/// luego prouebo  con un ruta post
-const createProduct = async (req, res) => {
-  const { sku, nombre_producto, descripcion_producto, precio, imgen } =
-    req.body;
 
-  try {
-    const { rows } = await db.query(
-      "INSERT INTO items (sku, nombre_producto, descripcion_producto, precio, imgen) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [sku, nombre_producto, descripcion_producto, precio, imgen]
-    );
-    res.json(rows[0]);
-  } catch (error) {
-    console.error("Error al crear producto:", error);
-    res.status(500).json({ error: error.message });
+const agregarproducto = async (
+  sku,
+  nombre_producto,
+  descripcion_producto,
+  precio,
+  imagen
+) => {
+  if (
+    (sku != "") &
+    (nombre_producto != "") &
+    (descripcion_producto != "") &
+    (precio != "")
+  ) {
+    try {
+      const consulta =
+        "INSERT INTO productos VALUES (DEFAULT, $1, $2, $3, $4, $5)";
+      const values = [
+        sku,
+        nombre_producto,
+        descripcion_producto,
+        precio,
+        imagen,
+      ];
+      const result = await pool.query(consulta, values);
+      console.log(result);
+      return result;
+    } catch (error) {
+      throw new Error("ha fallado la consulta", { cause: error });
+    }
   }
 };
-module.exports = { obtenerProducto, createProduct };
+module.exports = { obtenerProducto, agregarproducto };
