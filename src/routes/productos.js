@@ -4,7 +4,9 @@ const router = express.Router();
 const {
   obtenerProducto,
   agregarproducto,
+  modificarlikes,
 } = require("../controllers/productosController");
+const { validationMiddleware } = require("../middlewares/validatormiddelware");
 
 router.get("/", async (request, response) => {
   try {
@@ -32,6 +34,27 @@ router.post("/publicar", async (request, response) => {
   } catch (error) {
     console.error("Error al intentar traer productos :", error);
     response.status(500).json({ message: "Error al intentar traer productos" });
+  }
+});
+
+router.put("/:id", validationMiddleware, async (request, response) => {
+  const { id } = request.params;
+  const { sku, nombre_producto, descripcion_producto, precio, imagen } =
+    request.body;
+  try {
+    await modificarlikes(
+      sku,
+      nombre_producto,
+      descripcion_producto,
+      precio,
+      imagen,
+      id
+    );
+    response.send("producto modificado correctamente");
+  } catch (error) {
+    response
+      .status(500)
+      .json({ message: "Error al intentar modificar productos" });
   }
 });
 

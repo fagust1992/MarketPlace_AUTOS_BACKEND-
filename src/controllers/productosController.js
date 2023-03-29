@@ -46,4 +46,34 @@ const agregarproducto = async (
     }
   }
 };
-module.exports = { obtenerProducto, agregarproducto };
+
+const modificarlikes = async (
+  sku,
+  nombre_producto,
+  descripcion_producto,
+  precio,
+  imagen,
+  id
+) => {
+  try {
+    const consulta =
+      "UPDATE productos SET sku = $1, nombre_producto = $2, descripcion_producto = $3, precio = $4, imagen = $5  WHERE id = $6";
+
+    const values = [
+      sku,
+      nombre_producto,
+      descripcion_producto,
+      precio,
+      imagen,
+      id,
+    ];
+    const { rowCount } = await pool.query(consulta, values);
+    if (rowCount === 0) {
+      throw { code: 404, message: "No existe ningún producto con este id" };
+    }
+  } catch (error) {
+    response.send("ha fallado la consulta");
+    throw new Error("ha fallado la consulta", { cause: error });
+  }
+};
+module.exports = { obtenerProducto, agregarproducto, modificarlikes };
