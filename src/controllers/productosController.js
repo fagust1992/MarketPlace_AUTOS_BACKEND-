@@ -47,7 +47,7 @@ const agregarproducto = async (
   }
 };
 
-const modificarlikes = async (
+const modificarproducto = async (
   sku,
   nombre_producto,
   descripcion_producto,
@@ -76,4 +76,4 @@ const modificarlikes = async (
     throw new Error("ha fallado la consulta", { cause: error });
   }
 };
-module.exports = { obtenerProducto, agregarproducto, modificarlikes };
+module.exports = { obtenerProducto, agregarproducto, modificarproducto };

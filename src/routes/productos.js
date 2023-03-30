@@ -4,7 +4,7 @@ const router = express.Router();
 const {
   obtenerProducto,
   agregarproducto,
-  modificarlikes,
+  modificarproducto,
 } = require("../controllers/productosController");
 const { validationMiddleware } = require("../middlewares/validatormiddelware");
 
@@ -42,7 +42,7 @@ router.put("/:id", validationMiddleware, async (request, response) => {
   const { sku, nombre_producto, descripcion_producto, precio, imagen } =
     request.body;
   try {
-    await modificarlikes(
+    await modificarproducto(
       sku,
       nombre_producto,
       descripcion_producto,

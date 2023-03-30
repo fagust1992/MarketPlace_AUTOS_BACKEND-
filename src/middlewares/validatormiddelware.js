@@ -12,7 +12,8 @@ const validationMiddleware = (req, res, next) => {
     ) {
       throw {
         code: 401,
-        message: "el campo email y password no pueden estar vacios",
+        message:
+          "los campos no pueden estar vacios o mal escritos por favor verifique",
       };
     }
     next();
