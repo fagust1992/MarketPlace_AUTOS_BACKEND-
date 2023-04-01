@@ -6,7 +6,6 @@ const obtenerProducto = async () => {
   try {
     const { rows: productos } = await pool.query("SELECT * FROM productos");
     if (productos.length > 0) {
-      console.log(productos);
       return productos;
     }
   } catch (error) {
@@ -39,7 +38,7 @@ const agregarproducto = async (
         imagen,
       ];
       const result = await pool.query(consulta, values);
-      console.log(result);
+
       return result;
     } catch (error) {
       throw new Error("ha fallado la consulta", { cause: error });

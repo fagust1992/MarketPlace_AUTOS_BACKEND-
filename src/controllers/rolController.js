@@ -6,7 +6,6 @@ const obtenerRol = async () => {
   try {
     const { rows: roles } = await pool.query("SELECT * FROM rol");
     if (roles.length > 0) {
-      console.log(roles);
       return roles;
     }
   } catch (error) {
