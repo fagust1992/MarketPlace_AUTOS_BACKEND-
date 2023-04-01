@@ -1,7 +1,6 @@
 const { Pool } = require("pg"); // traigo el pool
 const { credenciales } = require("../db/credentials");
 const pool = new Pool(credenciales);
-const bcrypt = require("bcryptjs");
 
 const modificarUsuario = async (
   nombre,
@@ -18,6 +17,21 @@ const modificarUsuario = async (
   imagen,
   id
 ) => {
+  console.log(
+    nombre,
+    apellido,
+    email,
+    password,
+    direccion,
+    telefono,
+    Likes,
+    ventas,
+    rol_id,
+    producto_id,
+    ventas_id,
+    imagen,
+    id
+  );
   try {
     const consulta =
       "UPDATE usuario SET  nombre = $1, apellido = $2, email = $3, password = $4, direccion = $5, telefono = $6, likes = $7, ventas = $8, rol_id = $9, producto_id = $10, ventas_id = $11, imagen = $12  WHERE id = $13";
@@ -57,27 +71,6 @@ const eliminarUsuario = async (id) => {
     }
   } catch (error) {
     console.log(`Error deleting user: ${error.message}`);
-  }
-};
-
-exports.getUsuarios = async (req, res) => {
-  try {
-    const { rows } = await db.query(
-      "select user_id, username, email from users"
-    );
-
-    const encryptedRows = rows.map((row) => ({
-      user_id: row.user_id,
-      username: encrypt(row.username),
-      email: encrypt(row.email),
-    }));
-
-    return res.status(200).json({
-      success: true,
-      users: encryptedRows,
-    });
-  } catch (error) {
-    console.log(error.message);
   }
 };
 
