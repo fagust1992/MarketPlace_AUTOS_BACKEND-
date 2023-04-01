@@ -134,7 +134,7 @@ const on = () => {
   try {
     app.listen(3000, console.log("encedido el servidor"));
   } catch (error) {
-    throw new Error("ha fallado el servidor", { cause: error });
+    throw new Error("ha habido un problema con  el servidor", { cause: error });
   }
 };
 
