@@ -14,7 +14,8 @@ const CreateRol = async (rol, roledescription) => {
     }
   }
 };
-const obtenerRol = async () => {
+
+const obtenerRoles = async () => {
   try {
     const { rows: roles } = await pool.query("SELECT * FROM rol");
 
@@ -27,4 +28,33 @@ const obtenerRol = async () => {
   }
 };
 
-module.exports = { obtenerRol, CreateRol };
+const modificarRol = async (rol, roledescription, id) => {
+  try {
+    const consulta =
+      "UPDATE rol SET rol = $1, roledescription = $2  WHERE id = $3";
+
+    const values = [rol, roledescription, id];
+    const { rowCount } = await pool.query(consulta, values);
+
+    if (rowCount === 0) {
+      throw { code: 404, message: "No existe ningún rol con este id" };
+    }
+  } catch (error) {
+    throw new Error("ha fallado la consulta del rol", { cause: error });
+  }
+};
+
+const eliminarRol = async (id) => {
+  try {
+    const consulta = "DELETE FROM rol WHERE id = $1";
+    const values = [id];
+    const { rowCount } = await pool.query(consulta, values);
+
+    if (!rowCount) {
+    }
+  } catch (error) {
+    console.log(`Error deleting rol: ${error.message}`);
+  }
+};
+
+module.exports = { obtenerRoles, CreateRol, modificarRol, eliminarRol };
