@@ -49,7 +49,6 @@ const eliminarRol = async (id) => {
     const consulta = "DELETE FROM rol WHERE id = $1";
     const values = [id];
     const { rowCount } = await pool.query(consulta, values);
-
     if (!rowCount) {
     }
   } catch (error) {

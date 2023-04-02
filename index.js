@@ -5,6 +5,7 @@ const cors = require("cors");
 const productorouter = require("./src/routes/productos");
 const usuarios = require("./src/routes/usuario");
 const auth = require("./src/routes/auth");
+const ventas = require("./src/routes/ventas");
 
 app.use(cors());
 app.use(express.json());
@@ -12,6 +13,7 @@ app.use("/rol", require("./src/routes/Rol"));
 app.use("/productos", productorouter);
 app.use("/usuarios", usuarios);
 app.use("/auth", auth);
+app.use("/ventas", ventas);
 
 const on = () => {
   try {
