@@ -72,8 +72,32 @@ const modificarpassword = async (password, id) => {
   }
 };
 
-const getuser = async (req, res) => {
-  //en progreso//
+const getuser = async (email) => {
+  try {
+    const consulta = "SELECT * FROM usuario WHERE email = $1";
+    const values = [email];
+    const {
+      rows: [usuario],
+    } = await pool.query(consulta, values);
+    const newObjet = {
+      id: usuario.id,
+      nombre: usuario.nombre,
+      apellido: usuario.apellido,
+      email: usuario.email,
+      password: usuario.password,
+      direccion: usuario.direccion,
+      telefono: usuario.telefono,
+      likes: usuario.likes,
+      ventas: usuario,
+      rol_id: usuario.rol_id,
+      producto_id: usuario.producto_id,
+      ventas_id: usuario.ventas_id,
+      imagen: usuario.imagen,
+    };
+    return newObjet;
+  } catch (error) {
+    throw { code: 404, message: "No existe ningún usuario con este email" };
+  }
 };
 const getInformation_tables = async (req, res) => {
   //en progreso//
