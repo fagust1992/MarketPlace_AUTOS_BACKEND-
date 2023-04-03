@@ -21,5 +21,14 @@ const validationMiddleware = (req, res, next) => {
     res.status(error.code || 500).send(error);
   }
 };
+const token_verificacion = (req, res, next) => {
+  try {
+    const token = req.header("Authorization").split(" ")[1];
+    jwt.verify(token, "az_AZ");
 
-module.exports = { validationMiddleware };
+    next();
+  } catch (error) {
+    res.status(error.code || 498).send("error al traer token");
+  }
+};
+module.exports = { validationMiddleware, token_verificacion };

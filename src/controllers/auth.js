@@ -99,14 +99,17 @@ const getuser = async (email) => {
     throw { code: 404, message: "No existe ningún usuario con este email" };
   }
 };
-const getInformation_tables = async () => {
+const getInformation_tables = async (email) => {
   try {
-    const { rows: information } = await pool.query(`
+    const { rows: information } = await pool.query(
+      `
       SELECT r.rol, r.roledescription, p.*, u.likes
       FROM rol r
       JOIN usuario u ON r.id = u.rol_id
-      JOIN productos p ON u.producto_id = p.id;
-    `);
+      JOIN productos p ON u.producto_id = p.id WHERE u.email = $1
+    `,
+      [email]
+    );
     if (information.length === 0) {
       throw { code: 404, message: "No se encontraron resultados" };
     } else {
@@ -120,7 +123,7 @@ const getInformation_tables = async () => {
 const getInformation_productos_ventas_detalle_ventas = async () => {
   try {
     const { rows: information } = await pool.query(`
-    SELECT u.nombre, p.nombre_producto, dv.cantidad ,dv.valor_venta
+    SELECT u.nombre ,u.email, p.nombre_producto, dv.cantidad ,dv.valor_venta
     FROM usuario u
     JOIN ventas v ON u.ventas_id = v.id
     JOIN detalle_ventas dv ON v.id = dv.ventas_id

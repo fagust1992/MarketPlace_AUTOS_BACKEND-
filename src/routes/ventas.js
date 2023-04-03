@@ -5,7 +5,6 @@ const {
   obtenerventas,
   Createventas,
   modificarventas,
-  eliminarventas,
 } = require("../controllers/ventasController");
 
 router.get("/", async (request, response) => {
