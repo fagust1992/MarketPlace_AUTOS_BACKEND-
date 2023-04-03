@@ -89,13 +89,17 @@ router.get("/information", async (request, response) => {
     response.status(500).json({ message: "Error al intentar traer usuarios" });
   }
 });
-router.get("/informacion_productos_ventas_detalle_ventas", async (req, res) => {
-  try {
-    const information = await getInformation_productos_ventas_detalle_ventas();
-    res.status(200).json(information);
-  } catch (error) {
-    res.status(error.code || 500).json({ message: error.message });
+router.get(
+  "/informacion_productos_ventas_detalle_ventas",
+  async (request, response) => {
+    try {
+      const information =
+        await getInformation_productos_ventas_detalle_ventas();
+      response.status(200).json(information);
+    } catch (error) {
+      response.status(error.code || 500).json({ message: error.message });
+    }
   }
-});
+);
 
 module.exports = router;
