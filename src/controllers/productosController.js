@@ -53,6 +53,7 @@ const modificarproducto = async (
   precio,
   imagen,
   id
+  // conAgregar el objeto response como parámetro
 ) => {
   try {
     const consulta =
@@ -70,8 +71,11 @@ const modificarproducto = async (
     if (rowCount === 0) {
       throw { code: 404, message: "No existe ningún producto con este id" };
     }
+    // Enviar la respuesta
   } catch (error) {
-    response.send("ha fallado la consulta");
+    response
+      .status(500)
+      .json({ message: "Error al intentar modificar productos" });
     throw new Error("ha fallado la consulta", { cause: error });
   }
 };

@@ -18,14 +18,14 @@ const agregarusuario = async (
   imagen
 ) => {
   try {
-    const Encriptada = bcrypt.hashSync(password); // cambiar el campo de la tabla con mas caracteres para que no de error
+    const hashedPassword = await bcrypt.hash(password, 10); // cambiar el campo de la tabla con mas caracteres para que no de error
     const consulta =
       "INSERT INTO usuario VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)";
     const values = [
       nombre,
       apellido,
       email,
-      password,
+      hashedPassword,
       direccion,
       telefono,
       Likes,

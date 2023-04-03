@@ -50,7 +50,7 @@ router.put("/:id", validationMiddleware, async (request, response) => {
       imagen,
       id
     );
-    response.send("producto modificado correctamente");
+    response.json("producto modificado correctamente");
   } catch (error) {
     response
       .status(500)

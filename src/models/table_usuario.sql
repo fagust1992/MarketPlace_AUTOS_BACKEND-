@@ -4,7 +4,7 @@ CREATE TABLE usuario (
   nombre VARCHAR(20) NOT NULL,
   apellido VARCHAR(20) NOT NULL,
   email VARCHAR(50) NOT NULL UNIQUE,
-  password VARCHAR(10) NOT NULL,
+  password VARCHAR(250) NOT NULL,
   direccion  VARCHAR(50) NOT NULL,  
   telefono  VARCHAR(50) NOT NULL ,  
   Likes   INTEGER  NOT NULL,
