@@ -102,7 +102,7 @@ const getuser = async (email) => {
 const getInformation_tables = async () => {
   try {
     const { rows: information } = await pool.query(`
-      SELECT r.rol, r.roledescription, p.*, u.likes, u.telefono
+      SELECT r.rol, r.roledescription, p.*, u.likes
       FROM rol r
       JOIN usuario u ON r.id = u.rol_id
       JOIN productos p ON u.producto_id = p.id;
