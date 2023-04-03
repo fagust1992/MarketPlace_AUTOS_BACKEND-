@@ -107,8 +107,8 @@ const getInformation_tables = async () => {
       JOIN usuario u ON r.id = u.rol_id
       JOIN productos p ON u.producto_id = p.id;
     `);
-    if (information.length < 0) {
-      throw { code: 404, message: "No existe ningún resultado " };
+    if (information.length === 0) {
+      throw { code: 404, message: "No se encontraron resultados" };
     } else {
       return information;
     }
@@ -117,11 +117,30 @@ const getInformation_tables = async () => {
     throw { code: 404, message: "No se ejecuto la consulta " };
   }
 };
-
+const getInformation_productos_ventas_detalle_ventas = async () => {
+  try {
+    const { rows: information } = await pool.query(`
+    SELECT u.nombre, p.nombre_producto, dv.cantidad ,dv.valor_venta
+    FROM usuario u
+    JOIN ventas v ON u.ventas_id = v.id
+    JOIN detalle_ventas dv ON v.id = dv.ventas_id
+    JOIN productos p ON dv.producto_id = p.id
+    `);
+    if (information.length === 0) {
+      throw { code: 404, message: "No se encontraron resultados" };
+    } else {
+      return information;
+    }
+  } catch (error) {
+    console.error(error);
+    throw { code: 404, message: "No se ejecuto la consulta " };
+  }
+};
 module.exports = {
   login,
   agregarusuario,
   modificarpassword,
   getuser,
   getInformation_tables,
+  getInformation_productos_ventas_detalle_ventas,
 };

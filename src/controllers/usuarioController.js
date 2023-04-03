@@ -1,40 +1,26 @@
-const { Pool } = require("pg"); // traigo el pool
+const { Pool } = require("pg");
 const { credenciales } = require("../db/credentials");
+
 const pool = new Pool(credenciales);
 
-const modificarUsuario = async (
+const modificarUsuario = async ({
+  id,
   nombre,
   apellido,
   email,
   password,
   direccion,
   telefono,
-  Likes,
+  likes,
   ventas,
-  rol_id,
-  producto_id,
-  ventas_id,
+  rolId,
+  productoId,
+  ventasId,
   imagen,
-  id
-) => {
-  console.log(
-    nombre,
-    apellido,
-    email,
-    password,
-    direccion,
-    telefono,
-    Likes,
-    ventas,
-    rol_id,
-    producto_id,
-    ventas_id,
-    imagen,
-    id
-  );
+}) => {
   try {
     const consulta =
-      "UPDATE usuario SET  nombre = $1, apellido = $2, email = $3, password = $4, direccion = $5, telefono = $6, likes = $7, ventas = $8, rol_id = $9, producto_id = $10, ventas_id = $11, imagen = $12  WHERE id = $13";
+      "UPDATE usuario SET nombre=$1, apellido=$2, email=$3, password=$4, direccion=$5, telefono=$6, likes=$7, ventas=$8, rol_id=$9, producto_id=$10, ventas_id=$11, imagen=$12 WHERE id=$13";
 
     const values = [
       nombre,
@@ -43,22 +29,24 @@ const modificarUsuario = async (
       password,
       direccion,
       telefono,
-      Likes,
+      likes,
       ventas,
-      rol_id,
-      producto_id,
-      ventas_id,
+      rolId,
+      productoId,
+      ventasId,
       imagen,
       id,
     ];
+
     const { rowCount } = await pool.query(consulta, values);
 
     if (rowCount === 0) {
-      throw { code: 404, message: "No existe ningún usuario con este id" };
+      throw { code: 404, message: "No se encontró ningún usuario con este id" };
     }
+
+    return rowCount;
   } catch (error) {
-    response.send("ha fallado la consulta");
-    throw new Error("ha fallado la consulta", { cause: error });
+    throw new Error(`Error en modificarUsuario: ${error.message}`);
   }
 };
 
@@ -67,25 +55,31 @@ const eliminarUsuario = async (id) => {
     const consulta = "DELETE FROM usuario WHERE id = $1";
     const values = [id];
     const { rowCount } = await pool.query(consulta, values);
-    if (!rowCount) {
+
+    if (rowCount === 0) {
+      throw { code: 404, message: "No se encontró ningún usuario con este id" };
     }
+
+    return rowCount;
   } catch (error) {
-    console.log(`Error deleting user: ${error.message}`);
+    throw new Error(`Error en eliminarUsuario: ${error.message}`);
   }
 };
 
 const obtenerUsuarios = async () => {
   try {
-    const { rows: usuario } = await pool.query("SELECT * FROM usuario");
-    if (usuario.length > 0) {
-      return usuario;
+    const { rows } = await pool.query("SELECT * FROM usuario");
+
+    if (rows.length === 0) {
+      return null;
     }
+
+    return rows;
   } catch (error) {
-    throw new Error("ha fallado la conexion con la tabla usuario", {
-      cause: error,
-    });
+    throw new Error(`Error en obtenerUsuarios: ${error.message}`);
   }
 };
+
 module.exports = {
   modificarUsuario,
   eliminarUsuario,

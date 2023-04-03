@@ -7,6 +7,7 @@ const {
   modificarpassword,
   getuser,
   getInformation_tables,
+  getInformation_productos_ventas_detalle_ventas,
 } = require("../controllers/auth");
 
 router.post("/registrarse", async (req, res) => {
@@ -86,6 +87,14 @@ router.get("/information", async (request, response) => {
   } catch (error) {
     console.error("Error al intentar traer  usuarios :", error);
     response.status(500).json({ message: "Error al intentar traer usuarios" });
+  }
+});
+router.get("/informacion_productos_ventas_detalle_ventas", async (req, res) => {
+  try {
+    const information = await getInformation_productos_ventas_detalle_ventas();
+    res.status(200).json(information);
+  } catch (error) {
+    res.status(error.code || 500).json({ message: error.message });
   }
 });
 
