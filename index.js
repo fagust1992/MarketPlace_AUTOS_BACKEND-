@@ -6,6 +6,7 @@ const productorouter = require("./src/routes/productos");
 const usuarios = require("./src/routes/usuario");
 const auth = require("./src/routes/auth");
 const ventas = require("./src/routes/ventas");
+const detalle_venta = require("./src/routes/detalle_venta");
 
 app.use(cors());
 app.use(express.json());
@@ -14,6 +15,7 @@ app.use("/productos", productorouter);
 app.use("/usuarios", usuarios);
 app.use("/auth", auth);
 app.use("/ventas", ventas);
+app.use("/detalle_ventas", detalle_venta);
 
 const on = () => {
   try {

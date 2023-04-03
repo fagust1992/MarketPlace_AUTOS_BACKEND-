@@ -29,8 +29,6 @@ router.post("/add_ventas", async (request, response) => {
       detalle_ventas_id,
       fecha
     );
-
-    response.send("venta agregada");
   } catch (error) {
     console.error("Error al intentar crear ventas :", error);
     response.status(500).json({ message: "Error al intentar agregar ventas" });
