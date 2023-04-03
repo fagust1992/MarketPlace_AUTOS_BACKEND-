@@ -99,9 +99,23 @@ const getuser = async (email) => {
     throw { code: 404, message: "No existe ningún usuario con este email" };
   }
 };
-const getInformation_tables = async (req, res) => {
-  //en progreso//
-  // aqui van los join de las tablas que uniremos //
+const getInformation_tables = async () => {
+  try {
+    const { rows: information } = await pool.query(`
+      SELECT r.rol, r.roledescription, p.*, u.likes, u.telefono
+      FROM rol r
+      JOIN usuario u ON r.id = u.rol_id
+      JOIN productos p ON u.producto_id = p.id;
+    `);
+    if (information.length < 0) {
+      throw { code: 404, message: "No existe ningún resultado " };
+    } else {
+      return information;
+    }
+  } catch (error) {
+    console.error(error);
+    throw { code: 404, message: "No se ejecuto la consulta " };
+  }
 };
 
 module.exports = {

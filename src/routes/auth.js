@@ -6,6 +6,7 @@ const {
   agregarusuario,
   modificarpassword,
   getuser,
+  getInformation_tables,
 } = require("../controllers/auth");
 
 router.post("/registrarse", async (req, res) => {
@@ -78,4 +79,14 @@ router.post("/usuario", async (request, response) => {
       .json({ message: "Error al intentar traer datos de usuarios" });
   }
 });
+router.get("/information", async (request, response) => {
+  try {
+    const information = await getInformation_tables();
+    response.json(information);
+  } catch (error) {
+    console.error("Error al intentar traer  usuarios :", error);
+    response.status(500).json({ message: "Error al intentar traer usuarios" });
+  }
+});
+
 module.exports = router;

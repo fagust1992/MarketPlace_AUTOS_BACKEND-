@@ -3,7 +3,7 @@ const { credenciales } = require("../db/credentials");
 
 const pool = new Pool(credenciales);
 
-// Obtener todos los detalles de ventas///
+// Obtener todos los detalles de ventas
 const obtenerDetalleVentas = async () => {
   try {
     const { rows } = await pool.query("SELECT * FROM detalle_ventas");
@@ -15,7 +15,7 @@ const obtenerDetalleVentas = async () => {
   }
 };
 
-// Crear un nuevo detalle de venta///
+// Crear un nuevo detalle de venta
 const crearDetalleVenta = async (
   producto_id,
   ventas_id,
@@ -24,7 +24,7 @@ const crearDetalleVenta = async (
 ) => {
   try {
     const consulta =
-      "INSERT INTO detalle_ventas (producto_id, ventas_id, cantidad, valor_venta) VALUES ($1, $2, $3, $4)";
+      "INSERT INTO detalle_ventas (producto_id, ventas_id, cantidad, valor_venta) VALUES ($1, $2, $3, $4) RETURNING *";
     const valores = [producto_id, ventas_id, cantidad, valor_venta];
     const { rows } = await pool.query(consulta, valores);
     return rows[0];
@@ -35,7 +35,7 @@ const crearDetalleVenta = async (
   }
 };
 
-// Actualizar un detalle de venta existente//
+// Actualizar un detalle de venta existente
 const actualizarDetalleVenta = async (
   id,
   producto_id,
@@ -45,7 +45,7 @@ const actualizarDetalleVenta = async (
 ) => {
   try {
     const consulta =
-      "UPDATE detalle_ventas SET producto_id = $1, ventas_id = $2, cantidad = $3, valor_venta = $4 WHERE id = $5";
+      "UPDATE detalle_ventas SET producto_id = $1, ventas_id = $2, cantidad = $3, valor_venta = $4 WHERE id = $5 ";
     const valores = [producto_id, ventas_id, cantidad, valor_venta, id];
     const { rowCount, rows } = await pool.query(consulta, valores);
 
@@ -65,9 +65,28 @@ const actualizarDetalleVenta = async (
 };
 
 // Eliminar un detalle de venta existente
+const eliminarDetalleVenta = async (id) => {
+  try {
+    const consulta = "DELETE FROM detalle_ventas WHERE id = $1 RETURNING *";
+    const valores = [id];
+    const { rowCount, rows } = await pool.query(consulta, valores);
+
+    if (rowCount === 0) {
+      throw {
+        code: 404,
+        message: "No existe ningún detalle de venta con este id",
+      };
+    }
+
+    return rows[0];
+  } catch (error) {
+    throw new Error("Error al eliminar el detalle de venta", { cause: error });
+  }
+};
 
 module.exports = {
   obtenerDetalleVentas,
   crearDetalleVenta,
   actualizarDetalleVenta,
+  eliminarDetalleVenta,
 };
