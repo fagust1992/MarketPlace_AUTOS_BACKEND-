@@ -45,7 +45,7 @@ const actualizarDetalleVenta = async (
 ) => {
   try {
     const consulta =
-      "UPDATE detalle_ventas SET producto_id = $1, ventas_id = $2, cantidad = $3, valor_venta = $4 WHERE id = $5 RETURNING *";
+      "UPDATE detalle_ventas SET producto_id = $1, ventas_id = $2, cantidad = $3, valor_venta = $4 WHERE id = $5";
     const valores = [producto_id, ventas_id, cantidad, valor_venta, id];
     const { rowCount, rows } = await pool.query(consulta, valores);
 
